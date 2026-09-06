@@ -85,8 +85,8 @@ export default function App() {
       // ignore
     }
     return {
-      email: 'senior.homeguard@gmail.com',
-      name: 'Grandparent Home Guard',
+      email: 'drshahenyashpal@gmail.com',
+      name: 'Dr. Shahen Yashpal',
       plan: 'Premium Plus',
       activeCamerasAllowed: 3,
       concurrentViewersAllowed: 1,
@@ -94,6 +94,10 @@ export default function App() {
       loggedIn: true,
       passPin: '8888',
       cloudSyncEnabled: true,
+      authProvider: 'google',
+      googleDriveEnabled: true,
+      googleDriveAutoBackup: true,
+      googleDriveFolder: 'HGuard_Surveillance',
     };
   });
 
@@ -119,6 +123,36 @@ export default function App() {
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [isCloudStorageOpen, setIsCloudStorageOpen] = useState(false);
   const [isAIExplainerOpen, setIsAIExplainerOpen] = useState(false);
+
+  // Parse URL Search Parameters for 1-Tap Old Phone Launch
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const roleParam = params.get('role');
+      const userParam = params.get('user');
+      const pinParam = params.get('pin');
+
+      if (userParam) {
+        setUser((prev) => ({
+          ...prev,
+          email: decodeURIComponent(userParam),
+          authProvider: 'google',
+          loggedIn: true,
+        }));
+      }
+      if (pinParam) {
+        setSettings((prev) => ({
+          ...prev,
+          encryptionPin: pinParam,
+        }));
+      }
+      if (roleParam === 'camera' || roleParam === 'viewer') {
+        setMode(roleParam);
+      }
+    } catch (e) {
+      console.warn('URL param parse error:', e);
+    }
+  }, []);
 
   // Initialize Battery Service
   useEffect(() => {
@@ -511,6 +545,7 @@ export default function App() {
               thermal={thermal}
               setBattery={setBattery}
               setThermal={setThermal}
+              user={user}
             />
           </div>
         )}
@@ -566,6 +601,8 @@ export default function App() {
         onClose={() => setIsCloudStorageOpen(false)}
         localEvents={events}
         encryptionPin={settings.encryptionPin}
+        userEmail={user.email}
+        googleDriveWebhookUrl={user.googleDriveWebhookUrl}
       />
 
       {/* AI EXPLAINER & LIVE PLAYGROUND MODAL */}

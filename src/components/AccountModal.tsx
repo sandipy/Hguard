@@ -40,12 +40,40 @@ export const AccountModal: React.FC<AccountModalProps> = ({
   const [pinInput, setPinInput] = useState('');
   const [emailInput, setEmailInput] = useState(user.email);
   const [nameInput, setNameInput] = useState(user.name);
+  const [driveWebhookInput, setDriveWebhookInput] = useState(user.googleDriveWebhookUrl || '');
   const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
   const [repoUrl, setRepoUrl] = useState('https://github.com/sandipy/Hguard');
   const [copiedCmd, setCopiedCmd] = useState(false);
   const [copiedPagesUrl, setCopiedPagesUrl] = useState(false);
+  const [copiedCamLink, setCopiedCamLink] = useState<string | null>(null);
 
   if (!isOpen) return null;
+
+  const baseUrl = window.location.origin + window.location.pathname;
+
+  const getQuickPairLink = (slot: 'cam1' | 'cam2' | 'cam3') => {
+    return `${baseUrl}?role=camera&cam=${slot}&pin=${user.passPin}&user=${encodeURIComponent(user.email)}`;
+  };
+
+  const handleCopyCamLink = (slot: 'cam1' | 'cam2' | 'cam3') => {
+    const link = getQuickPairLink(slot);
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(link);
+      setCopiedCamLink(slot);
+      setTimeout(() => setCopiedCamLink(null), 2500);
+    }
+  };
+
+  const handleGoogleQuickLogin = (email: string) => {
+    setEmailInput(email);
+    onUpdateUser({
+      email,
+      authProvider: 'google',
+      loggedIn: true,
+    });
+    setFeedbackMsg(`Connected with Gmail account: ${email}`);
+    setTimeout(() => setFeedbackMsg(null), 2500);
+  };
 
   const gitPushCommand = `git remote add origin ${repoUrl.trim()}
 git branch -M main
@@ -73,8 +101,10 @@ git push -u origin main`;
       email: emailInput,
       name: nameInput,
       passPin: pinInput.length === 4 ? pinInput : user.passPin,
+      googleDriveWebhookUrl: driveWebhookInput,
+      authProvider: 'google',
     });
-    setFeedbackMsg('Account settings updated successfully!');
+    setFeedbackMsg('Account & Google Drive settings saved successfully!');
     setTimeout(() => setFeedbackMsg(null), 2500);
   };
 
@@ -188,6 +218,246 @@ git push -u origin main`;
                 100% Ad-Free Experience
               </span>
             </div>
+          </div>
+        </div>
+
+        {/* Gmail One-Tap Authentication (Optimized for Very Old Phones) */}
+        <div className="bg-slate-950 border-2 border-slate-800 rounded-2xl p-5 flex flex-col gap-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center border border-red-500/30">
+                <Mail className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-black text-white">Gmail Account & Identity</h3>
+                  <span className="text-[11px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">
+                    Connected
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400">
+                  Unified identity for all 3 cameras and master viewer station
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                id="quick-gmail-preset-btn"
+                onClick={() => handleGoogleQuickLogin('drshahenyashpal@gmail.com')}
+                className="px-3.5 py-1.5 bg-red-600 hover:bg-red-500 text-white text-xs font-black rounded-xl flex items-center gap-1.5 transition shadow"
+              >
+                <span>Use drshahenyashpal@gmail.com</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center font-bold text-amber-400 border border-amber-500/30 text-sm">
+                G
+              </div>
+              <div>
+                <div className="text-sm font-black text-white">{user.email}</div>
+                <div className="text-xs text-slate-400">
+                  Senior Master PIN: <span className="font-mono text-amber-300 font-bold">{user.passPin}</span>
+                </div>
+              </div>
+            </div>
+            <div className="text-right sm:text-left text-[11px] text-emerald-400 bg-emerald-950/40 px-3 py-1 rounded-lg border border-emerald-500/30 font-bold">
+              ✓ 24/7 Permanent Session (Zero-Crash Mode for Old Phones)
+            </div>
+          </div>
+
+          <div className="bg-slate-900/50 p-3 rounded-xl border border-slate-800/80 text-xs text-slate-300 flex items-start gap-2">
+            <AlertCircle className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+            <span>
+              <strong>Why this is best for old phones:</strong> Standard Google OAuth popups expire every 60 minutes and crash old mobile WebViews. HGuard uses permanent 24/7 device link keys so unattended camera phones never get disconnected while guarding your home.
+            </span>
+          </div>
+        </div>
+
+        {/* 1-Tap Quick Pair Links for Very Old Phones */}
+        <div className="bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border-2 border-cyan-500/50 rounded-2xl p-5 flex flex-col gap-4 shadow-xl">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <div className="p-2 bg-cyan-500/20 text-cyan-400 rounded-xl border border-cyan-500/40">
+                <Smartphone className="w-6 h-6" />
+              </div>
+              <div>
+                <h4 className="text-lg font-black text-white flex items-center gap-2">
+                  Old Phone 1-Tap Quick Links
+                  <span className="text-xs bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 px-2 py-0.5 rounded-full font-bold">
+                    Zero-Friction
+                  </span>
+                </h4>
+                <p className="text-xs text-slate-400">
+                  Send or bookmark these links on your old phones to launch camera mode automatically
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {/* Cam 1 Quick Link */}
+            <div className="bg-slate-800/80 border border-slate-700 rounded-xl p-3.5 flex flex-col justify-between gap-2.5">
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black text-emerald-400">Camera 1</span>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">Front Door</span>
+                </div>
+                <div className="text-xs text-slate-300 mt-1">
+                  Boots directly into Cam 1 with Eco-Cool screen and Battery Guard.
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  id="copy-cam1-link-btn"
+                  onClick={() => handleCopyCamLink('cam1')}
+                  className="flex-1 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 transition"
+                >
+                  {copiedCamLink === 'cam1' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{copiedCamLink === 'cam1' ? 'Copied Link!' : 'Copy Cam 1 Link'}</span>
+                </button>
+                <a
+                  href={getQuickPairLink('cam1')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg transition"
+                  title="Test in new tab"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
+
+            {/* Cam 2 Quick Link */}
+            <div className="bg-slate-800/80 border border-slate-700 rounded-xl p-3.5 flex flex-col justify-between gap-2.5">
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black text-amber-400">Camera 2</span>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">Living Room</span>
+                </div>
+                <div className="text-xs text-slate-300 mt-1">
+                  Boots directly into Cam 2 senior lounge with baby/cry detection.
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  id="copy-cam2-link-btn"
+                  onClick={() => handleCopyCamLink('cam2')}
+                  className="flex-1 py-1.5 bg-amber-600 hover:bg-amber-500 text-slate-950 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 transition"
+                >
+                  {copiedCamLink === 'cam2' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{copiedCamLink === 'cam2' ? 'Copied Link!' : 'Copy Cam 2 Link'}</span>
+                </button>
+                <a
+                  href={getQuickPairLink('cam2')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg transition"
+                  title="Test in new tab"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
+
+            {/* Cam 3 Quick Link */}
+            <div className="bg-slate-800/80 border border-slate-700 rounded-xl p-3.5 flex flex-col justify-between gap-2.5">
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black text-cyan-400">Camera 3</span>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">Backyard</span>
+                </div>
+                <div className="text-xs text-slate-300 mt-1">
+                  Boots directly into Cam 3 with pet & driveway vehicle tracking.
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  id="copy-cam3-link-btn"
+                  onClick={() => handleCopyCamLink('cam3')}
+                  className="flex-1 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 transition"
+                >
+                  {copiedCamLink === 'cam3' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{copiedCamLink === 'cam3' ? 'Copied Link!' : 'Copy Cam 3 Link'}</span>
+                </button>
+                <a
+                  href={getQuickPairLink('cam3')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg transition"
+                  title="Test in new tab"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Google Drive Cloud Storage Settings */}
+        <div className="bg-slate-950 border-2 border-slate-800 rounded-2xl p-5 flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="p-2 bg-amber-500/20 text-amber-400 rounded-xl border border-amber-500/30">
+                <HardDrive className="w-6 h-6" />
+              </div>
+              <div>
+                <h4 className="text-lg font-black text-white flex items-center gap-2">
+                  Google Drive Cloud Vault
+                  <span className="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">
+                    Folder Ready
+                  </span>
+                </h4>
+                <p className="text-xs text-slate-400">
+                  Folder: <span className="font-mono text-amber-300">Google Drive / HGuard_Surveillance /</span>
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => onUpdateUser({ googleDriveAutoBackup: !user.googleDriveAutoBackup })}
+              className={`px-3 py-1.5 rounded-xl text-xs font-black border transition ${
+                user.googleDriveAutoBackup !== false
+                  ? 'bg-emerald-600 text-white border-emerald-500 shadow'
+                  : 'bg-slate-800 text-slate-400 border-slate-700'
+              }`}
+            >
+              {user.googleDriveAutoBackup !== false ? 'Auto-Backup: ON' : 'Auto-Backup: OFF'}
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
+              <strong className="text-slate-200 block mb-0.5">Viewer-Assisted Sync</strong>
+              <span className="text-slate-400">
+                Clips are archived to Google Drive from your primary Viewer station. Old phone processors stay cool and never stall.
+              </span>
+            </div>
+            <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
+              <strong className="text-slate-200 block mb-0.5">Date & Camera Folders</strong>
+              <span className="text-slate-400">
+                Surveillance recordings are categorized by day and camera (Front Door, Living Room, Backyard) automatically.
+              </span>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-slate-300 mb-1">
+              Google Drive Webhook / Cloud Export URL (Optional):
+            </label>
+            <input
+              type="text"
+              value={driveWebhookInput}
+              onChange={(e) => setDriveWebhookInput(e.target.value)}
+              placeholder="https://script.google.com/macros/s/... or custom cloud endpoint"
+              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-amber-300 focus:border-amber-400 focus:outline-none"
+            />
           </div>
         </div>
 

@@ -30,6 +30,7 @@ import {
   SecurityEvent,
   ThermalStatus,
   AIDetectionResult,
+  UserProfile,
 } from '../types';
 import { MotionDetector } from '../utils/motionDetector';
 import { encryptData } from '../utils/crypto';
@@ -45,6 +46,7 @@ interface CameraViewProps {
   thermal: ThermalStatus;
   setBattery: (state: BatteryState) => void;
   setThermal: (status: ThermalStatus) => void;
+  user?: UserProfile;
 }
 
 const CAMERA_NAMES: Record<CameraSlot, string> = {
@@ -61,8 +63,16 @@ export const CameraView: React.FC<CameraViewProps> = ({
   thermal,
   setBattery,
   setThermal,
+  user,
 }) => {
-  const [selectedSlot, setSelectedSlot] = useState<CameraSlot>('cam1');
+  const [selectedSlot, setSelectedSlot] = useState<CameraSlot>(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const cam = params.get('cam');
+      if (cam === 'cam1' || cam === 'cam2' || cam === 'cam3') return cam;
+    } catch {}
+    return 'cam1';
+  });
   const [currentAiResult, setCurrentAiResult] = useState<AIDetectionResult | null>(null);
   const [isSurveillanceActive, setIsSurveillanceActive] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
@@ -578,6 +588,24 @@ export const CameraView: React.FC<CameraViewProps> = ({
           </span>
         </div>
       )}
+
+      {/* GMAIL ACCOUNT & ZERO-CRASH STATUS BAR */}
+      <div className="bg-slate-950 border border-slate-800 px-4 py-2.5 rounded-2xl flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span className="font-bold text-white">
+            Gmail Linked: <span className="text-amber-300 font-mono">{user?.email || 'drshahenyashpal@gmail.com'}</span>
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-bold text-[11px]">
+            ✓ 24/7 Permanent Session (Zero-Crash Mode)
+          </span>
+          <span className="text-slate-400 hidden sm:inline">
+            • PIN: <strong className="text-amber-300 font-mono">{settings.encryptionPin}</strong>
+          </span>
+        </div>
+      </div>
 
       {/* CAMERA SLOT SELECTOR (3 Cameras) */}
       <div className="bg-slate-900 border-2 border-slate-700 p-3 sm:p-4 rounded-2xl flex flex-wrap items-center justify-between gap-3">

@@ -70,6 +70,12 @@ export interface UserProfile {
   loggedIn: boolean;
   passPin: string;
   cloudSyncEnabled: boolean;
+  // Google Drive & Gmail settings optimized for very old phones
+  googleDriveEnabled?: boolean;
+  googleDriveFolder?: string;
+  googleDriveWebhookUrl?: string;
+  googleDriveAutoBackup?: boolean;
+  authProvider?: 'google' | 'pin';
 }
 
 export interface AppSettings {
