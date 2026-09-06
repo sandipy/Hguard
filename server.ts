@@ -96,6 +96,21 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Git status and repository connection instructions
+app.get('/api/git-info', (req, res) => {
+  res.json({
+    status: 'initialized',
+    branch: 'main',
+    repositoryReady: true,
+    userEmail: 'drshahenyashpal@gmail.com',
+    instructions: {
+      step1: 'Visit https://github.com/new to create an empty repository (leave README and .gitignore unchecked).',
+      step2: 'Connect via AI Studio: Click the AI Studio Settings menu and choose "Export to GitHub", then select your newly created repository.',
+      step3: 'Or connect via Git terminal: git remote add origin https://github.com/<your-username>/<repo-name>.git && git push -u origin main'
+    }
+  });
+});
+
 // Gemini Vision AI Detection Endpoint
 app.post('/api/ai-detect', async (req, res) => {
   try {
