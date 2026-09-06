@@ -64,7 +64,7 @@ export const SeniorTopNav: React.FC<SeniorTopNavProps> = ({
               <div className="text-lg sm:text-xl font-black tracking-wide text-amber-400 flex items-center gap-1.5">
                 HGUARD
                 <span className="text-[10px] bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 px-2 py-0.5 rounded font-black uppercase tracking-wider">
-                  Alfred Premium+
+                  HGuard Premium+
                 </span>
               </div>
               <div className="text-[11px] text-slate-300 font-medium">3 Cameras • 1 Viewer • Cloud 30D</div>
@@ -178,7 +178,7 @@ export const SeniorTopNav: React.FC<SeniorTopNavProps> = ({
             id="nav-account-btn"
             onClick={onOpenAccount}
             className="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 border-2 border-amber-500/40 px-3 py-1.5 rounded-xl font-bold text-xs sm:text-sm text-amber-300 transition"
-            title="User Account & Alfred Premium Plus status"
+            title="User Account & Premium Plus status"
           >
             <User className="w-4 h-4 text-amber-400" />
             <span className="hidden sm:inline truncate max-w-[110px]">{user.name.split(' ')[0]}</span>

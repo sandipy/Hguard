@@ -553,7 +553,7 @@ export const CameraView: React.FC<CameraViewProps> = ({
         </div>
       )}
 
-      {/* CAMERA SLOT SELECTOR (Alfred Premium Plus 3 Cameras) */}
+      {/* CAMERA SLOT SELECTOR (3 Cameras) */}
       <div className="bg-slate-900 border-2 border-slate-700 p-3 sm:p-4 rounded-2xl flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Device Camera Slot:</span>

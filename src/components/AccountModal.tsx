@@ -116,13 +116,13 @@ git push -u origin main`;
           </div>
         )}
 
-        {/* Plan Feature Summary Card (Alfred Camera Premium Plus) */}
+        {/* Plan Feature Summary Card (HGuard Premium Plus) */}
         <div className="bg-gradient-to-br from-amber-950/40 via-slate-900 to-slate-950 border-2 border-amber-500/30 rounded-2xl p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Crown className="w-6 h-6 text-amber-400" />
               <span className="text-lg font-black text-amber-300">
-                Alfred Camera: Premium Plus Tier
+                HGuard: Premium Plus Tier
               </span>
             </div>
             <span className="text-xs bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full font-bold border border-emerald-500/30">

@@ -77,7 +77,7 @@ export interface AppSettings {
   detectionZone: 'full' | 'center';
   motionCooldownSec: number;
   
-  // Alfred Premium Plus AI Features
+  // Premium Plus AI Features
   aiDetectionEnabled: boolean;
   aiPersonDetection: boolean;
   aiPetDetection: boolean;

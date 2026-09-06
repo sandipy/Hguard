@@ -96,13 +96,13 @@ export const AIExplainerModal: React.FC<AIExplainerModalProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-2xl sm:text-3xl font-black">How Alfred AI Works</h2>
+                <h2 className="text-2xl sm:text-3xl font-black">How HGuard AI Works</h2>
                 <span className="bg-amber-500 text-slate-950 font-black text-xs px-2.5 py-0.5 rounded-full uppercase">
                   Gemini Vision Inside
                 </span>
               </div>
               <p className="text-sm sm:text-base text-slate-400">
-                Understanding the Multimodal AI detection pipeline in HGuard & Alfred Premium Plus
+                Understanding the Multimodal AI detection pipeline in HGuard Premium Plus
               </p>
             </div>
           </div>

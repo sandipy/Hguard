@@ -75,7 +75,7 @@ export const MonitorView: React.FC<MonitorViewProps> = ({
 
   const [activeCameraId, setActiveCameraId] = useState<CameraSlot>('cam1');
   const [viewLayout, setViewLayout] = useState<'grid' | 'single'>('grid');
-  const [zoomLevel, setZoomLevel] = useState<number>(1.0); // 1.0x to 4.0x (Alfred Premium Plus)
+  const [zoomLevel, setZoomLevel] = useState<number>(1.0); // 1.0x to 4.0x (Premium Plus)
   const [panPosition, setPanPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [isAudioListening, setIsAudioListening] = useState(true);
   const [isTalking, setIsTalking] = useState(false);
@@ -389,7 +389,7 @@ export const MonitorView: React.FC<MonitorViewProps> = ({
               Master Surveillance Viewer
             </h2>
             <span className="bg-amber-500/20 text-amber-300 text-xs px-2.5 py-1 rounded-full font-black border border-amber-500/40 uppercase">
-              Alfred Premium Plus (3 Cams)
+              HGuard Premium Plus (3 Cams)
             </span>
           </div>
           <p className="text-slate-300 text-sm font-medium mt-1">
@@ -426,7 +426,7 @@ export const MonitorView: React.FC<MonitorViewProps> = ({
         </div>
       </div>
 
-      {/* 3 CAMERAS SELECTOR TABS (Alfred Premium Plus 3-Camera Topology) */}
+      {/* 3 CAMERAS SELECTOR TABS (3-Camera Topology) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {CAMERA_SLOTS.map((slot) => {
           const cam = camerasState[slot.id];
@@ -488,7 +488,7 @@ export const MonitorView: React.FC<MonitorViewProps> = ({
 
       {/* VIEWPORT: MULTI-SCREEN 3-GRID OR SINGLE FOCUSED */}
       {viewLayout === 'grid' ? (
-        /* MULTI-SCREEN 3-CAMERA GRID (Alfred Premium Plus Multi-Screen Monitoring) */
+        /* MULTI-SCREEN 3-CAMERA GRID (Multi-Screen Monitoring) */
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {CAMERA_SLOTS.map((slot) => {
             const cam = camerasState[slot.id];
@@ -601,7 +601,7 @@ export const MonitorView: React.FC<MonitorViewProps> = ({
               )}
             </div>
 
-            {/* AI Frame Bounding Box Overlay (Alfred Premium Plus Feature) */}
+            {/* AI Frame Bounding Box Overlay */}
             {aiFrameVisible && activeCamStatus?.aiResult?.objects && (
               <div className="absolute inset-0 pointer-events-none">
                 {activeCamStatus.aiResult.objects.map((obj, i) => (
@@ -655,7 +655,7 @@ export const MonitorView: React.FC<MonitorViewProps> = ({
             )}
           </div>
 
-          {/* 4X ZOOM & CAMERA CONTROLS BAR (Alfred Premium Plus) */}
+          {/* 4X ZOOM & CAMERA CONTROLS BAR (Premium Plus) */}
           <div className="bg-slate-900 border-2 border-slate-700 p-4 rounded-2xl flex flex-wrap items-center justify-between gap-4">
             {/* 4x Digital Zoom Slider */}
             <div className="flex items-center gap-3 w-full sm:w-auto">

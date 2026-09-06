@@ -60,7 +60,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <div className="flex items-center gap-2">
               <h2 className="text-2xl sm:text-3xl font-black text-white">HGUARD SETTINGS</h2>
               <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-black border border-amber-500/40 uppercase">
-                Alfred Premium+
+                HGuard Premium+
               </span>
             </div>
             <p className="text-sm sm:text-base text-slate-300 font-medium mt-0.5">
@@ -79,7 +79,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
         {/* Form Body */}
         <div className="p-5 sm:p-6 overflow-y-auto flex-1 flex flex-col gap-6">
-          {/* SECTION 1: RESOLUTION & ALFRED PREMIUM PLUS VIDEO QUALITY */}
+          {/* SECTION 1: RESOLUTION & FULL HD VIDEO QUALITY */}
           <div className="bg-slate-950 p-5 rounded-2xl border-2 border-slate-800 flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <div className="p-2.5 bg-amber-500/20 text-amber-400 rounded-xl">
@@ -88,7 +88,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <div>
                 <h3 className="text-xl font-black text-white">Streaming Video Resolution</h3>
                 <p className="text-xs sm:text-sm text-slate-400">
-                  Alfred Premium Plus supports Full HD 1080p recording and live playback.
+                  HGuard Premium Plus supports Full HD 1080p recording and live playback.
                 </p>
               </div>
             </div>

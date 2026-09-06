@@ -322,7 +322,7 @@ export const CloudStorageModal: React.FC<CloudStorageModalProps> = ({
                     {new Date(activePlaybackClip.timestamp).toLocaleString()}
                   </div>
                   <div className="absolute top-3 right-3 bg-amber-500/90 text-slate-950 px-2 py-0.5 rounded text-xs font-black uppercase tracking-wider">
-                    Alfred Premium Plus 1080p
+                    HGuard Premium Plus 1080p
                   </div>
                   <div className="absolute bottom-3 left-3 bg-black/80 px-3 py-1 rounded-full text-xs font-bold text-slate-300">
                     Duration: {activePlaybackClip.durationSec}s Clip

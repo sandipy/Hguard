@@ -126,7 +126,7 @@ app.post('/api/ai-detect', async (req, res) => {
 
     if (ai) {
       try {
-        const prompt = `You are the AI Detection Engine for Alfred Camera Premium Plus surveillance.
+        const prompt = `You are the AI Detection Engine for HGuard Premium Plus surveillance.
 Analyze this video camera snapshot from "${cameraName}".
 Active detection filters: ${detectModes.join(', ')}.
 

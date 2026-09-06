@@ -281,7 +281,7 @@ export default function App() {
             <div className="text-center flex flex-col items-center gap-3">
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/20 via-yellow-400/20 to-emerald-500/20 border border-amber-400/50 px-4 py-1.5 rounded-full text-amber-300 font-black text-sm tracking-wide uppercase">
                 <Crown className="w-4 h-4 text-amber-400" />
-                <span>Alfred Camera Premium Plus Enabled • 3 Cameras • 1 Viewer • Cloud 30D</span>
+                <span>HGuard Premium Plus Enabled • 3 Cameras • 1 Viewer • Cloud 30D</span>
               </div>
               <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
                 WHAT ROLE FOR THIS DEVICE?
