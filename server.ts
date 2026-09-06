@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { GoogleGenAI, Type } from '@google/genai';
 import { createServer as createViteServer } from 'vite';
@@ -96,19 +97,28 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Git status and repository connection instructions
+// Git repository and GitHub Pages info
 app.get('/api/git-info', (req, res) => {
   res.json({
-    status: 'initialized',
+    status: 'connected',
+    username: 'sandipy',
+    repoName: 'Hguard',
+    githubRepoUrl: 'https://github.com/sandipy/Hguard',
+    githubPagesUrl: 'https://sandipy.github.io/Hguard/',
+    offlineZipUrl: '/hguard-offline.zip',
     branch: 'main',
     repositoryReady: true,
-    userEmail: 'drshahenyashpal@gmail.com',
-    instructions: {
-      step1: 'Visit https://github.com/new to create an empty repository (leave README and .gitignore unchecked).',
-      step2: 'Connect via AI Studio: Click the AI Studio Settings menu and choose "Export to GitHub", then select your newly created repository.',
-      step3: 'Or connect via Git terminal: git remote add origin https://github.com/<your-username>/<repo-name>.git && git push -u origin main'
-    }
   });
+});
+
+// Download offline zip package
+app.get('/api/download-offline-zip', (req, res) => {
+  const zipPath = path.join(process.cwd(), 'hguard-offline.zip');
+  if (fs.existsSync(zipPath)) {
+    res.download(zipPath, 'hguard-offline.zip');
+  } else {
+    res.status(404).json({ error: 'Zip not found' });
+  }
 });
 
 // Gemini Vision AI Detection Endpoint

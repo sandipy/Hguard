@@ -24,6 +24,7 @@ export interface AIDetectionResult {
   primaryType: AIObjectType;
   threatLevel: 'none' | 'low' | 'medium' | 'high';
   summary: string;
+  confidence?: number;
   audioAnomalyDetected?: boolean;
   lingeringDetected?: boolean;
   objects: AIFrameBox[];

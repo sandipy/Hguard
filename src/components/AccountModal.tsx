@@ -41,8 +41,9 @@ export const AccountModal: React.FC<AccountModalProps> = ({
   const [emailInput, setEmailInput] = useState(user.email);
   const [nameInput, setNameInput] = useState(user.name);
   const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
-  const [repoUrl, setRepoUrl] = useState('https://github.com/your-username/hguard-camera');
+  const [repoUrl, setRepoUrl] = useState('https://github.com/sandipy/Hguard');
   const [copiedCmd, setCopiedCmd] = useState(false);
+  const [copiedPagesUrl, setCopiedPagesUrl] = useState(false);
 
   if (!isOpen) return null;
 
@@ -55,6 +56,14 @@ git push -u origin main`;
       navigator.clipboard.writeText(gitPushCommand);
       setCopiedCmd(true);
       setTimeout(() => setCopiedCmd(false), 2500);
+    }
+  };
+
+  const handleCopyPagesUrl = () => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText('https://sandipy.github.io/Hguard/');
+      setCopiedPagesUrl(true);
+      setTimeout(() => setCopiedPagesUrl(false), 2500);
     }
   };
 
@@ -304,77 +313,134 @@ git push -u origin main`;
           </p>
         </div>
 
-        {/* GitHub Repository Connection & "Page Not Found" Troubleshooting */}
+        {/* GitHub Repository Connection, Live GitHub.io Web App & Offline ZIP */}
         <div className="bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border-2 border-indigo-500/50 rounded-2xl p-5 flex flex-col gap-4 shadow-xl">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
               <div className="p-2 bg-indigo-500/20 text-indigo-400 rounded-xl border border-indigo-500/40">
                 <Github className="w-6 h-6" />
               </div>
               <div>
                 <h4 className="text-lg font-black text-white flex items-center gap-2">
-                  GitHub Repository Setup & Connect
-                  <span className="text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full font-bold">
-                    Code Sync
+                  GitHub & Cloud Sync Hub
+                  <span className="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">
+                    Connected: sandipy/Hguard
                   </span>
                 </h4>
                 <p className="text-xs text-slate-400">
-                  Fix &quot;Page not found&quot; when creating or connecting a new repository
+                  Live GitHub Pages hosting, repository code sync & offline standalone package
                 </p>
               </div>
             </div>
-            <a
-              id="github-create-repo-link"
-              href="https://github.com/new"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-black rounded-xl flex items-center gap-1.5 transition shadow"
-            >
-              <span>Create New Repo on GitHub</span>
-              <ExternalLink className="w-4 h-4" />
-            </a>
-          </div>
-
-          <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 text-xs text-amber-200/90 flex items-start gap-2.5">
-            <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-            <div>
-              <strong className="text-amber-300 font-bold block mb-0.5">
-                Why does GitHub say &quot;Page not found / Check that the URL was entered correctly&quot;?
-              </strong>
-              GitHub returns 404 whenever a repository has not yet been created on your GitHub profile, or if the repository name has a typo. GitHub requires you to create the empty repository first at{' '}
+            <div className="flex items-center gap-2">
               <a
-                href="https://github.com/new"
+                id="github-repo-link"
+                href="https://github.com/sandipy/Hguard"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline font-bold text-amber-300 hover:text-amber-200"
+                className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-black rounded-xl flex items-center gap-1.5 transition shadow"
               >
-                github.com/new
-              </a>{' '}
-              before AI Studio or Git CLI can connect to it.
+                <span>View GitHub Repo</span>
+                <ExternalLink className="w-4 h-4" />
+              </a>
             </div>
+          </div>
+
+          {/* GitHub.io Live Web App Banner */}
+          <div className="bg-gradient-to-r from-emerald-950/60 via-slate-900 to-indigo-950/60 border border-emerald-500/40 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+                <strong className="text-sm font-black text-emerald-300">Live GitHub Pages Web URL:</strong>
+              </div>
+              <a
+                href="https://sandipy.github.io/Hguard/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-xs text-emerald-400 hover:underline block mt-0.5"
+              >
+                https://sandipy.github.io/Hguard/
+              </a>
+              <p className="text-[11px] text-slate-400 mt-0.5">
+                Always live and accessible anywhere in the world on modern browsers.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={handleCopyPagesUrl}
+                className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-emerald-500/40 text-emerald-300 text-xs font-bold rounded-xl flex items-center gap-1.5 transition"
+              >
+                {copiedPagesUrl ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                <span>{copiedPagesUrl ? 'Copied' : 'Copy URL'}</span>
+              </button>
+              <a
+                id="open-github-pages-btn"
+                href="https://sandipy.github.io/Hguard/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black rounded-xl flex items-center gap-1.5 transition shadow"
+              >
+                <span>Open App</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
+
+          {/* Download Offline Standalone ZIP Card */}
+          <div className="bg-slate-900/90 border border-slate-700 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex items-start gap-3">
+              <div className="p-2 bg-amber-500/20 text-amber-400 rounded-xl border border-amber-500/30 shrink-0">
+                <Download className="w-5 h-5" />
+              </div>
+              <div>
+                <strong className="text-sm font-black text-white block">
+                  Download Offline Standalone App (.ZIP)
+                </strong>
+                <p className="text-xs text-slate-300 mt-0.5">
+                  Complete client bundle with index.html and assets. Works 100% offline without internet.
+                </p>
+                <div className="flex items-center gap-2 mt-1 text-[11px] text-slate-400 font-mono">
+                  <span>hguard-offline.zip (~230 KB)</span>
+                  <span>•</span>
+                  <span>Battery 80% Guard</span>
+                  <span>•</span>
+                  <span>Motion & Audio Analysis</span>
+                </div>
+              </div>
+            </div>
+            <a
+              id="download-offline-zip-btn"
+              href="./hguard-offline.zip"
+              download="hguard-offline.zip"
+              className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-slate-950 text-xs font-black rounded-xl flex items-center gap-2 transition shadow shrink-0"
+            >
+              <Download className="w-4 h-4 text-slate-950" />
+              <span>Download Offline ZIP</span>
+            </a>
           </div>
 
           {/* Quick Steps */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
             <div className="bg-slate-800/60 border border-slate-700 p-3 rounded-xl flex flex-col gap-1">
               <span className="text-amber-400 font-black">STEP 1</span>
-              <strong className="text-slate-200">Create Empty Repo</strong>
+              <strong className="text-slate-200">GitHub Repository</strong>
               <p className="text-slate-400">
-                Go to <span className="text-slate-200 font-mono">github.com/new</span>. Enter a name (e.g. <span className="font-mono text-indigo-300">hguard-camera</span>). Leave README unchecked.
+                Synced to <span className="font-mono text-indigo-300">sandipy/Hguard</span> on the <span className="font-mono text-emerald-300">main</span> branch.
               </p>
             </div>
             <div className="bg-slate-800/60 border border-slate-700 p-3 rounded-xl flex flex-col gap-1">
               <span className="text-amber-400 font-black">STEP 2</span>
-              <strong className="text-slate-200">AI Studio Export</strong>
+              <strong className="text-slate-200">GitHub Pages</strong>
               <p className="text-slate-400">
-                In Google AI Studio&apos;s upper menu, click <span className="text-slate-200 font-bold">Settings &gt; Export to GitHub</span>, or click Share.
+                Automated deployment enabled via GitHub Actions and the <span className="font-mono text-indigo-300">gh-pages</span> branch.
               </p>
             </div>
             <div className="bg-slate-800/60 border border-slate-700 p-3 rounded-xl flex flex-col gap-1">
               <span className="text-amber-400 font-black">STEP 3</span>
-              <strong className="text-slate-200">Or Push via Git CLI</strong>
+              <strong className="text-slate-200">Offline Standalone</strong>
               <p className="text-slate-400">
-                Git repository is already initialized on <span className="font-mono text-emerald-300">main</span> with all files committed.
+                Extract <span className="font-mono text-amber-300">hguard-offline.zip</span> to run anytime locally without an external web server.
               </p>
             </div>
           </div>
@@ -383,7 +449,7 @@ git push -u origin main`;
           <div className="flex flex-col gap-2 pt-1">
             <label className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
               <Terminal className="w-4 h-4 text-emerald-400" />
-              Your New GitHub Repository URL (Paste here to generate exact push command):
+              Git CLI Command (Pre-configured for sandipy/Hguard):
             </label>
             <div className="flex gap-2">
               <input
@@ -391,7 +457,7 @@ git push -u origin main`;
                 type="text"
                 value={repoUrl}
                 onChange={(e) => setRepoUrl(e.target.value)}
-                placeholder="https://github.com/your-username/your-repo-name"
+                placeholder="https://github.com/sandipy/Hguard"
                 className="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-indigo-300 focus:border-indigo-400 focus:outline-none"
               />
               <button

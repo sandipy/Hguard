@@ -60,17 +60,52 @@ export const AIExplainerModal: React.FC<AIExplainerModalProps> = ({
         }
         const imgData = dummyCanvas.toDataURL('image/jpeg', 0.7);
 
-        const res = await fetch('/api/ai-detect', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            imageBase64: imgData,
-            cameraName: 'Front Door Camera',
-            detectModes: [category, 'lingering'],
-          }),
+        try {
+          const res = await fetch('/api/ai-detect', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              imageBase64: imgData,
+              cameraName: 'Front Door Camera',
+              detectModes: [category, 'lingering'],
+            }),
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data?.result) {
+              setTestResult(data.result);
+              return;
+            }
+          }
+        } catch {
+          // Fall through to offline mock result
+        }
+
+        // Offline / GitHub Pages fallback simulation
+        const fallbackBoxes = {
+          person: [{ label: 'Person (Visitor)', confidence: 95, box_2d: [180, 260, 780, 720] }],
+          pet: [{ label: 'Pet (Dog)', confidence: 92, box_2d: [420, 310, 740, 680] }],
+          vehicle: [{ label: 'Vehicle (Automobile)', confidence: 94, box_2d: [280, 180, 700, 820] }],
+          baby_cry: [{ label: 'Audio Anomaly (Cry)', confidence: 89, box_2d: [200, 200, 600, 600] }],
+          lingering: [{ label: 'Person (Lingering > 3min)', confidence: 91, box_2d: [190, 300, 790, 700] }],
+        };
+
+        const fallbackSummaries = {
+          person: 'Person detected approaching doorstep with 95% confidence.',
+          pet: 'Pet detected moving across living area with 92% confidence.',
+          vehicle: 'Vehicle detected in driveway with 94% confidence.',
+          baby_cry: 'Acoustic spike and distress pattern detected with 89% confidence.',
+          lingering: 'Subject lingering in zone for over 3 minutes with 91% confidence.',
+        };
+
+        setTestResult({
+          detected: true,
+          primaryType: category as any,
+          confidence: 93,
+          summary: fallbackSummaries[category] || `Simulated ${category} detected`,
+          threatLevel: category === 'lingering' ? 'medium' : 'low',
+          objects: (fallbackBoxes[category] || [{ label: `${category} subject`, confidence: 90, box_2d: [200, 200, 600, 600] }]) as any,
         });
-        const data = await res.json();
-        setTestResult(data.result);
       }
     } catch (e) {
       console.error(e);

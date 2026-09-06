@@ -57,23 +57,58 @@ export const CloudStorageModal: React.FC<CloudStorageModalProps> = ({
   const [activePlaybackClip, setActivePlaybackClip] = useState<StoredCloudClip | null>(null);
   const [timelineScrubTime, setTimelineScrubTime] = useState<number>(Date.now());
 
-  // Fetch from server /api/cloud-storage/events
+  // Fetch from server /api/cloud-storage/events or fallback to local events & storage
   const fetchCloudEvents = async () => {
     setLoading(true);
     try {
       const res = await fetch('/api/cloud-storage/events');
       if (res.ok) {
         const data = await res.json();
-        setCloudClips(data.events || []);
         if (data.events && data.events.length > 0) {
+          setCloudClips(data.events);
+          localStorage.setItem('hguard_cloud_clips', JSON.stringify(data.events));
           setActivePlaybackClip(data.events[0]);
+          setLoading(false);
+          return;
         }
       }
     } catch (e) {
       console.warn('Failed to fetch from cloud storage API, using fallback clips:', e);
-    } finally {
-      setLoading(false);
     }
+
+    // Offline / Local fallback: retrieve from localStorage or map from localEvents
+    const cached = localStorage.getItem('hguard_cloud_clips');
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setCloudClips(parsed);
+          setActivePlaybackClip(parsed[0]);
+          setLoading(false);
+          return;
+        }
+      } catch {}
+    }
+
+    if (localEvents.length > 0) {
+      const converted: StoredCloudClip[] = localEvents.map((evt) => ({
+        id: evt.id,
+        cameraId: evt.cameraId,
+        cameraName: evt.cameraName,
+        timestamp: evt.timestamp,
+        eventType: (evt.eventType as AIObjectType) || 'motion',
+        durationSec: 15,
+        thumbnailUrl: evt.decryptedSnapshot || '',
+        aiSummary: evt.aiSummary || evt.notes || 'Motion detected by camera',
+        threatLevel: evt.motionIntensity > 80 ? 'high' : evt.motionIntensity > 50 ? 'medium' : 'low',
+        aiFrameBoxes: evt.aiDetectedObjects,
+      }));
+      setCloudClips(converted);
+      if (converted.length > 0) {
+        setActivePlaybackClip(converted[0]);
+      }
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
