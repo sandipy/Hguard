@@ -1,0 +1,12 @@
+{
+  "name": "HGuard Home Monitor",
+  "description": "Senior-friendly home surveillance app with battery 80% protection, overheat cool-down, motion detection, and encrypted event logs.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
+
